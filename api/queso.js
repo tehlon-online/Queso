@@ -2,7 +2,10 @@ import fs from 'fs';
 import path from 'path';
 
 export default async function handler(req, res) {
-  console.log('QUESO API incoming body:', req.body); // Moved inside handler for Vercel logs
+  console.log('QUESO API handler invoked');
+  console.log('Request method:', req.method);
+  console.log('Request headers:', req.headers);
+  console.log('Request body:', req.body); // Moved inside handler for Vercel logs
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
