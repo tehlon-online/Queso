@@ -72,19 +72,7 @@ export default async function handler(req, res) {
   }
 
   const data = await response.json();
-  let reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content
-    ? data.choices[0].message.content
-    : 'No response from OpenAI.';
-
-  // About 1/6th of messages in binary
-  function toBinary(text) {
-    return text.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
-  }
-  if (Math.random() < 1/6) {
-    reply = toBinary(reply);
-    data.choices[0].message.content = reply;
-    data.model = (data.model || '') + '-binary';
-  }
+  // No more binary encoding here
 
   res.status(200).json(data);
 }
