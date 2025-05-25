@@ -254,7 +254,7 @@
                 <input type="checkbox" id="voice-toggle" /> Voice
             </label>
         </div>
-        <form id="chat-form">
+        <form id="chat-form" onsubmit="return false;">
             <textarea id="user-input" placeholder="Type your message..." autocomplete="off"></textarea>
             <button type="button" id="speech-button" title="Voice Input">
                 <svg viewBox="0 0 24 24">
@@ -378,7 +378,7 @@
         }
     }
     function escapeHtml(str) {
-        return str.replace(/[&<>"']/g, function(m) {
+        return str.replace(/[&<>\"']/g, function(m) {
             switch (m) {
                 case '&': return '&amp;';
                 case '<': return '&lt;';
