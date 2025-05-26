@@ -546,7 +546,7 @@
     function initialize() {
         initializeSpeechRecognition();
         setupEventListeners();
-        updateConnectionStatus(false);
+        // updateConnectionStatus(false); // Removed to keep status blank on load
         document.getElementById('model-indicator').textContent = '(running on OpenAI)';
     }
     initialize();
