@@ -271,6 +271,7 @@
     // Add these at the top of your <script> block:
     let messageCount = 0;
     let quesoPassword = "";
+    let conversationHistory = [];
 
     // DOM Elements
     const chatForm = document.getElementById('chat-form');
@@ -473,6 +474,7 @@
         }
 
         appendMessage('USER', message, 'user-you');
+        conversationHistory.push({ role: 'user', content: message });
         userInput.value = '';
         setThinkingStatus();
 
@@ -482,7 +484,8 @@
             body: JSON.stringify({
                 message,
                 count: messageCount + 1,
-                password: quesoPassword
+                password: quesoPassword,
+                history: conversationHistory
             })
         })
         .then(response => response.json())
@@ -499,6 +502,7 @@
                 ? data.choices[0].message.content
                 : 'No response from OpenAI.';
             appendMessage('QUESO', reply, 'user-queso');
+            conversationHistory.push({ role: 'assistant', content: reply });
             if (voiceToggle.checked) {
                 speakText(reply);
             }
@@ -546,6 +550,7 @@
     function initialize() {
         initializeSpeechRecognition();
         setupEventListeners();
+        conversationHistory = [];
         // updateConnectionStatus(false); // Removed to keep status blank on load
         document.getElementById('model-indicator').textContent = '(running on OpenAI)';
     }
