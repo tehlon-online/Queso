@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
-  const { message, password, count } = req.body;
+  const { message, password, count, history } = req.body;
 
   // Only allow more than 5 messages if password is correct
   if (count > 5) {
@@ -50,6 +50,14 @@ export default async function handler(req, res) {
     });
   }
 
+  // Build messages array for OpenAI
+  let messages = [{ role: 'system', content: systemPrompt }];
+  if (Array.isArray(history) && history.length > 0) {
+    messages = messages.concat(history);
+  } else {
+    messages.push({ role: 'user', content: message });
+  }
+
   // Call OpenAI API
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -59,10 +67,7 @@ export default async function handler(req, res) {
     },
     body: JSON.stringify({
       model: 'gpt-3.5-turbo',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: message }
-      ]
+      messages
     })
   });
 
